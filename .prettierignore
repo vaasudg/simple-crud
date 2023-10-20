@@ -1,0 +1,6 @@
+node_modules
+buils
+.build
+.npm
+**/.git
+src/mocks
