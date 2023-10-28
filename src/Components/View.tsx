@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEmployeeContext, useEmployeeDispatch } from '../context/EmployeeContext'
 import { EmployeeProps } from '../utils/types'
+import { skillsMap } from '../utils/utils'
 import Header from './Common/Header'
 import Image from './Common/Image'
 const View = () => {
@@ -111,11 +112,11 @@ const View = () => {
               </div>
               <div className='text-gray-700'>
                 <div className='grid md:grid-cols-2 text-sm'>
-                  <div className='grid grid-cols-2'>
+                  <div className='grid grid-cols-2 bg-gray-100'>
                     <div className='px-4 py-2 font-semibold'>First Name</div>
                     <div className='px-4 py-2'>{employee?.firstName}</div>
                   </div>
-                  <div className='grid grid-cols-2'>
+                  <div className='grid grid-cols-2 bg-gray-100'>
                     <div className='px-4 py-2 font-semibold'>Last Name</div>
                     <div className='px-4 py-2'>{employee?.lastName}</div>
                   </div>
@@ -131,11 +132,11 @@ const View = () => {
                     <div className='px-4 py-2 font-semibold'>Phone No.</div>
                     <div className='px-4 py-2'>{employee?.mobileNo}</div>
                   </div>
-                  <div className='grid grid-cols-2'>
+                  <div className='grid grid-cols-2 bg-gray-100'>
                     <div className='px-4 py-2 font-semibold'>Birthday</div>
                     <div className='px-4 py-2'>{employee?.dob}</div>
                   </div>
-                  <div className='grid grid-cols-2'>
+                  <div className='grid grid-cols-2 bg-gray-100'>
                     <div className='px-4 py-2 font-semibold'>Address</div>
                     <div className='px-4 py-2'>{employee?.city}</div>
                   </div>
@@ -144,9 +145,9 @@ const View = () => {
                     <div className='px-4 py-2'>{employee?.gender}</div>
                   </div>
                 </div>
-                <div className='grid grid-cols-2'>
+                <div className='grid grid-cols-2 bg-gray-100'>
                   <div className='px-4 py-2 font-semibold'>Skill</div>
-                  <div className='px-4 py-2'>{employee?.gender}</div>
+                  <div className='px-4 py-2 uppercase'>{skillsMap(employee?.skils)}</div>
                 </div>
               </div>
             </div>

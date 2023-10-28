@@ -1,11 +1,25 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEmployeeContext } from '../context/EmployeeContext'
+import { skillsMap } from '../utils/utils'
 import Image from './Common/Image'
+import Popup from './Common/Popup'
 
+interface DeleteItemI {
+  id: string
+  name: string
+}
 const ViewList = ({ userData }: any) => {
   const navigate = useNavigate()
   const { deleteEmployee } = useEmployeeContext()
-  const onDelete = (id: number) => deleteEmployee(id)
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
+  const [toDelete, setToDelete] = useState<DeleteItemI>({ id: '', name: '' })
+  const onClose = () => setIsPopupOpen(false)
+
+  const onDelete = () => {
+    deleteEmployee(toDelete.id)
+    setIsPopupOpen(false)
+  }
 
   return (
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
@@ -45,9 +59,9 @@ const ViewList = ({ userData }: any) => {
           </thead>
           <tbody>
             {userData?.map((employee: any) => {
-              const skills = employee.skils
+              const skills = employee?.skils
               return (
-                <tr key={employee.id} className='bg-white border-b '>
+                <tr key={employee?.id} className='bg-white border-b '>
                   <th
                     onClick={() => navigate(`/${employee.id}`)}
                     scope='row'
@@ -62,7 +76,7 @@ const ViewList = ({ userData }: any) => {
                           description={employee?.firstName as string}
                         />
                       </div>
-                      <p className='ml-4  overflow-hidden truncate w-[150px]'>{`${employee.firstName} ${employee.lastName}`}</p>
+                      <p className='ml-4  overflow-hidden truncate w-[150px]'>{`${employee?.firstName} ${employee?.lastName}`}</p>
                     </div>
                   </th>
                   <td className='px-6 py-4 uppercase'>{employee.gender}</td>
@@ -70,11 +84,7 @@ const ViewList = ({ userData }: any) => {
                   <td className='px-6 py-4 uppercase'>{employee.mobileNo}</td>
                   <td className='px-6 py-4 uppercase'>{employee.dob}</td>
                   <td className='px-6 py-4 uppercase'>{employee.city}</td>
-                  <td className='px-6 py-4 uppercase'>
-                    {Object.keys(skills)
-                      .filter(skill => skills[skill])
-                      .join(', ')}
-                  </td>
+                  <td className='px-6 py-4 uppercase'>{skillsMap(skills)}</td>
                   <td className='px-6 py-4 uppercase'>
                     <Link to={`/${employee.id}`} className='font-medium text-blue-600  hover:underline'>
                       View
@@ -86,7 +96,10 @@ const ViewList = ({ userData }: any) => {
                     /
                     <Link
                       to={`/`}
-                      onClick={() => onDelete(employee.id)}
+                      onClick={() => {
+                        setToDelete({ id: employee?.id, name: `${employee?.firstName} ${employee?.lastName}` })
+                        setIsPopupOpen(true)
+                      }}
                       className='font-medium text-blue-600  hover:underline'
                     >
                       Delete
@@ -98,6 +111,7 @@ const ViewList = ({ userData }: any) => {
           </tbody>
         </table>
       )}
+      {isPopupOpen && <Popup onClose={onClose} onConfirm={onDelete} empName={toDelete?.name} />}
     </div>
   )
 }
